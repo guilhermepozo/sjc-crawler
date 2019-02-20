@@ -7,7 +7,7 @@ const _ = require("lodash");
 const moment = require('moment')
 numeral.locale('pt-br')
 moment.locale('pt-br')
-const logger = require('./log')
+const logger = require('./utils/log')
 
 let parseData = (texto) => {
     const dataTexto = xregexp.exec(texto, xregexp('(3[01]|[12][0-9]|0?[1-9]) *de *(Fevereiro|Janeiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro) *de *((?:19|20)\\d{2})', 'igs'))
@@ -53,14 +53,14 @@ let scraping = async() => {
         'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=14'
 
     ]
-try{
+
+
     let browser = await puppeteer.launch({
         headless: true
     })
-}
-catch(e){
-    logger.error(e)
-}
+
+    
+
     let scraping = {};
     let banco = [];
 

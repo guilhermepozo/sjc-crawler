@@ -25,7 +25,7 @@ PS: Foi também implementado um "retorno" que pode ser utilazado como resposta �
 	- puppeteer - Browser server-side.
 	- winston - Loggin.
 	- xregexp - API para Expressões Reguláres .
-3. Declare a senha do banco de dados em uma variável de ambiente **DB_PASSWORD**:  `set DB_PASSWORD=<senha> ` - Linux
+3. Declare a senha do banco de dados em uma variável de ambiente **DB_PASSWORD**:  `export DB_PASSWORD=<senha> ` - Linux
 	> Obs.:Para este projeto utilizei o serviço Atlas MongoDB, minha senha é `admin` para efeitos de teste.
 
 4. Preencha o arquivo config/default.json com as informações do seu Banco de Dados MongoDB.

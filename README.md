@@ -9,8 +9,8 @@ PS: Foi também implementado um "retorno" que pode ser utilazado como resposta �
 
 ## Como Utilizar
 
- 1. Se estiver em ambiente AWS (AWS linux, Cloud9) execute o arquivo
-    `installChrome.sh` 
+ 1. Se estiver em ambiente AWS (AWS linux, Cloud9) execute o arquivo:
+    `. ./installChrome.sh` 
 	 > Também pode ser aplicado para SO's CentOS/RHEL-based)
     
     A aplicação utiliza o Puppeteer, biblioteca que disponibiliza uma

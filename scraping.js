@@ -53,10 +53,14 @@ let scraping = async() => {
         'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=14'
 
     ]
-
+try{
     let browser = await puppeteer.launch({
         headless: true
     })
+}
+catch(e){
+    logger.error(e)
+}
     let scraping = {};
     let banco = [];
 

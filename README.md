@@ -3,15 +3,15 @@ Está aplicação obtém os dados de licitações da cidade de Sãso José dos C
 PS: Foi também implementado um "retorno" que pode ser utilazado como resposta à um requisição HTTP (API).
 
 ### Requisitos
-- Node v10
-- NPM v6
-- Linux CentOS/RHEL-based ou Windows com Google Chrome já instalado.
+- Node ^v10
+- NPM ^v6
+- Linux CentOS/RHEL 7 -based ou Windows com Google Chrome já instalado.
 
 ## Como Utilizar
 
  1. Se estiver em ambiente AWS (AWS linux, Cloud9) execute o arquivo:
     `. ./installChrome.sh` 
-	 > Também pode ser aplicado para SO's CentOS/RHEL-based)
+	 > Também pode ser aplicado para SO's CentOS/RHEL 7 -based)
     
     A aplicação utiliza o Puppeteer, biblioteca que disponibiliza uma
     API que controla Chromium, uma versão do Chrome "headless e

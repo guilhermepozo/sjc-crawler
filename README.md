@@ -34,4 +34,5 @@ PS: Foi também implementado um "retorno" que pode ser utilazado como resposta �
 
 ## Considerações
 - Comecei direto a página de licitações de SJC sem antes pensar em outra página com mais elementos (tabelas, lista de links...), então acabei trabalhando com poucos elementos/manipulações com o DOM e com mais expressões regulares (RegEx) para obter os dados dos textos, onde possuem padrões diferentes.
+  [Site Licitações Prefeitura de São José dos Campos - SP](https://servicos.sjc.sp.gov.br/sa/licitacoes/index.aspx)
 - Notará que o arquivo `scraping.js` cria duas estruturas, uma para salvar os dados no banco e uma para um possível retorno, acabei disponibilizando um *'return'* já estruturado, onde pode ser uma resposta à uma requisição HTTP (API).

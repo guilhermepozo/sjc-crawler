@@ -1,4 +1,4 @@
-# SJC Crawaler
+# SJC Crawler
 Está aplicação obtém os dados de licitações da cidade de São José dos Campos - SP e salva em um bando de dados (MongoDB).
 > Também foi implementado um "retorno" que pode ser utilizado como resposta à um requisição HTTP (API).
 

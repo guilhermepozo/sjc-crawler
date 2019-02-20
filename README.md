@@ -1,6 +1,6 @@
 # SJC Crawaler
 Está aplicação obtém os dados de licitações da cidade de Sãso José dos Campos - SP e salva em um bando de dados (MongoDB).
-PS: Foi também implementado um "retorno" que pode ser utilazado como resposta à um requisição HTTP (API).
+> Também foi implementado um "retorno" que pode ser utilazado como resposta à um requisição HTTP (API).
 
 ### Requisitos
 - Node ^v10

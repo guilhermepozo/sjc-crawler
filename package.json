@@ -5,6 +5,10 @@
   "main": "index.js",
   "repository": "",
   "author": "Guilherme Pozo <guilhermepozoti@gmail.com>",
+  "scripts": {
+    "start": "node index.js",
+    "brasil317": "BD_PASSWORD=admin node index.js"
+  },
   "dependencies": {
     "config": "^3.0.1",
     "lodash": "^4.17.11",

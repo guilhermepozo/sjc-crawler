@@ -1,7 +1,7 @@
 const config = require('config');
 
 module.exports = function() {
-  if (!config.get('db_password')) {
-    throw new Error('FATAL ERROR: senha do MongoDB não definida.');
+  if (!config.get('db')) {
+    throw new Error('FATAL ERROR: string de conexão do bando não definida.');
   }
 }

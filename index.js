@@ -8,7 +8,7 @@ const logger = require('./utils/log');
 let app = scraping;
 
 app().then(res => {
-       // logger.info(JSON.stringify(res, null, 2))
+        logger.info(JSON.stringify(res, null, 2)) //return simulado
         mongoose.disconnect()
 
     },

@@ -34,8 +34,10 @@ let scraping = async() => {
         }
 
         sections.map((value, key) => {
-            const bid = createBid(value, department, category);
-            data.push(bid)
+            const bidCreated = createBid(value, department, category);
+            const bid = _.pickBy(bidCreated, _.identity);
+
+            data.push(_.omit(bid,['department','category']))
             dbData.push(bid)
 
         })

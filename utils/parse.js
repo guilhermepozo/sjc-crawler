@@ -22,20 +22,28 @@ let hasBids = (element) => {
 
 let createBid = (section, department, category) => {
     let date = moment(parseDate(section) + ' ' + parseTime(section), "DD/MM/YYYY HH:mm Z")
-    let status = xregexp('SUSPENS', 'igs').test(section) ? "SUSPENSO" : xregexp('PRORROGAD ', 'igs').test(section) ? "PRORROGADO" : "ABERTO"
+
+    let status = section.search(/suspens/i) != -1 ? "SUSPENSO" : section.search(/prorrog/i) != -1  ? "PRORROGADO" : "ABERTO"
+    
+
     let price = numeral(xregexp.exec(section, xregexp("R\\$.*?\\,\\d{2}", 'igs'))[0].replace('R$', '')).value()
     let description = xregexp.exec(section, xregexp('<br>(.*?)<br>', 'igs'))[1]
     let title = xregexp.exec(section, xregexp('<b>(.*?)<\/b>', 'igs'))[1]
+        if(title == "PP 191/2018/SS"){
+          console.log(section)
+          console.log(status)
+    }
     const bid = {
         title,
         description,
         price,
         status,
-        date,
+        date: status == "ABERTO" ? date : null ,
         department,
         category
     }
-    return bid;
+    return bid
+;
 }
 
 exports.createBid = createBid;

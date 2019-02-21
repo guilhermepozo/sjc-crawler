@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const xregexp = require('xregexp');
-const Licitacao = require('./models/licitacoes')
+const Bids = require('./models/bid')
+const config = require('config')
 const numeral = require('numeral');
 require('numeral/locales');
 const _ = require("lodash");
@@ -9,117 +10,83 @@ numeral.locale('pt-br')
 moment.locale('pt-br')
 const logger = require('./utils/log')
 
-let parseData = (texto) => {
-    const dataTexto = xregexp.exec(texto, xregexp('(3[01]|[12][0-9]|0?[1-9]) *de *(Fevereiro|Janeiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro) *de *((?:19|20)\\d{2})', 'igs'))
-    const dataNumero = xregexp.exec(texto, xregexp('(3[01]|[12][0-9]|0?[1-9])\\/(1[012]|0?[1-9])\\/((?:19|20)\\d{2})', 'igs'))
+const urls = config.get('urls')
 
-    return dataNumero ? dataNumero[0] : dataTexto ? moment(`${dataTexto[1]}/${dataTexto[2]}/${dataTexto[3]}`, 'DD/MMMM/YYYY').format('DD/MM/YYYY') : null
+let parseDate = (text) => {
+    const textDate = xregexp.exec(text, xregexp('(3[01]|[12][0-9]|0?[1-9]) *de *(Fevereiro|Janeiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro) *de *((?:19|20)\\d{2})', 'igs'))
+    const numberDate = xregexp.exec(text, xregexp('(3[01]|[12][0-9]|0?[1-9])\\/(1[012]|0?[1-9])\\/((?:19|20)\\d{2})', 'igs'))
+    return numberDate ? numberDate[0] : textDate ? moment(`${textDate[1]}/${textDate[2]}/${textDate[3]}`, 'DD/MMMM/YYYY').format('DD/MM/YYYY') : null
 }
-let parseHora = (texto) => {
-    return xregexp.exec(texto, xregexp('(\\d{1,2}(h|:)\\d{2})', 'igs')) ? xregexp.exec(texto, xregexp('(\\d{1,2}(h|:)\\d{2})', 'igs'))[1].replace('h', ":") : null
+
+let parseTime = (text) => {
+    const time = xregexp.exec(text, xregexp('(\\d{1,2}(h|:)\\d{2})', 'igs'))
+    return time ? time[1].replace('h', ":") : null
+}
+
+let hasBids = (element) => {
+    return element.search('Nenhuma licitação nessa modalidade.') ? true : false
+}
+
+let createBid = (section, department, category) => {
+    let date = moment(parseDate(section) + ' ' + parseTime(section), "DD/MM/YYYY HH:mm Z")
+    let status = xregexp('SUSPENS', 'igs').test(section) ? "SUSPENSO" : xregexp('PRORROGAD ', 'igs').test(section) ? "PRORROGADO" : "ABERTO"
+    let price = numeral(xregexp.exec(section, xregexp("R\\$.*?\\,\\d{2}", 'igs'))[0].replace('R$', '')).value()
+    let description = xregexp.exec(section, xregexp('<br>(.*?)<br>', 'igs'))[1]
+    let title = xregexp.exec(section, xregexp('<b>(.*?)<\/b>', 'igs'))[1]
+    const bid = {
+        title,
+        description,
+        price,
+        status,
+        date,
+        department,
+        category
+    }
+    return bid;
 }
 
 let scraping = async() => {
-
-
-    let urls = [
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=1',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=2',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=3',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=4',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=5',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=6',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=7',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=8',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=9',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=10',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=11',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=12',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=13',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=14',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=1',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=2',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=3',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=4',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=5',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=6',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=7',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=8',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=9',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=10',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=11',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=12',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=13',
-        'https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=14'
-
-    ]
-
-
+    let response = {};
+    let dbData = []
     let browser = await puppeteer.launch({
         headless: true
-    })
-
-    
-
-    let scraping = {};
-    let banco = [];
-
+    });
+    const page = await browser.newPage();
 
     for (let i = 0; i < urls.length; i++) {
-        const page = await browser.newPage();
 
-        await page.goto(urls[i]);
+        const url = urls[i]
+        await page.goto(url);
         await page.waitForSelector('#ctl00_cphConteudo_lblResultado')
+        const text = await page.$eval('#ctl00_cphConteudo_lblResultado', element => element.innerHTML);
+        const category = await page.$eval('#ctl00_cphConteudo_lblModalidade', element => element.innerText);
+        const department = await page.$eval('#ctl00_cphConteudo_lblSecretaria', element => element.innerText);
+        const getSections = xregexp('(.*?)<br><br>', 'igs')
+        const sections = xregexp.split(text, getSections).filter(element => element != '')
 
-
-        const resultado = await page.$eval('#ctl00_cphConteudo_lblResultado', e => e.innerHTML);
-        const modalidade = await page.$eval('#ctl00_cphConteudo_lblModalidade', e => e.innerText);
-        const secretaria = await page.$eval('#ctl00_cphConteudo_lblSecretaria', e => e.innerText);
-
-        if (resultado.search('Nenhuma licitação nessa modalidade.') != -1) {
-            _.setWith(scraping, `[${secretaria}][${modalidade}]`, [])
+        if (!hasBids(text)) {
+            _.setWith(response, `[${department}][${category}]`, [])
             continue;
         }
 
-        let item = xregexp.split(resultado, xregexp('(.*?)<br><br>', 'igs')).filter(el => el != '')
-        let dados = []
-        item.map((chave, valor) => {
-            const licitacao = {
-                titulo: xregexp.exec(chave, xregexp('<b>(.*?)<\/b>', 'igs'))[1],
-                descricao: xregexp.exec(chave, xregexp('<br>(.*?)<br>', 'igs'))[1],
-                valor: numeral(xregexp.exec(chave, xregexp("R\\$.*?\\,\\d{2}", 'igs'))[0].replace('R$', '')).value(),
-                prazo: xregexp('SUSPENS', 'igs').test(chave) ? { status: "SUSPENSO" } : xregexp('PRORROGADA ', 'igs').test(chave) ? { status: "PRORROGADO" } : {
-                    status: "ABERTO",
-                    data: moment(parseData(chave) + ' ' + parseHora(chave), "DD/MM/YYYY HH:mm Z"),
-                }
-            }
-            banco.push(_.pickBy({
-                secretaria: secretaria,
-                modalidade: modalidade,
-                titulo: licitacao.titulo,
-                descricao: licitacao.descricao,
-                valor: licitacao.valor,
-                status: licitacao.prazo.status,
-                data: licitacao.prazo.data
+        sections.map((value, key) => {
+            const bid = createBid(value, department, category);
+            dbData.push(bid)
+             _.setWith(response, `[${department}][${category}]`, bid)
 
-            }, _.identity))
-
-            dados.push(licitacao)
         })
-        _.setWith(scraping, `[${secretaria}][${modalidade}]`, dados)
-
     }
 
-
-
-
-    await Licitacao.insertMany(banco, function(err, docs) {
-        if (err) { logger.error(err) };
-
+    await Bids.insertMany(dbData, function(err, docs) {
+        if (err) {
+            logger.error(err)
+        };
         logger.info('Dados Salvos no MongoDB');
     });
-    await browser.close();
-    return scraping;
+
+
+    await browser.close()
+    return response;
 }
 
 module.exports = scraping;

@@ -5,12 +5,15 @@ const mongoose = require('mongoose');
 const scraping = require('./scraping');
 const logger = require('./utils/log');
 
+let app = scraping;
 
-scraping().then(res => {
-       logger.info(JSON.stringify(res, null, 2))
+app().then(res => {
+       // logger.info(JSON.stringify(res, null, 2))
         mongoose.disconnect()
 
     },
     error => {
         logger.error(error);
     })
+
+module.exports = app;

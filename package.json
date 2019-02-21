@@ -7,7 +7,7 @@
   "author": "Guilherme Pozo <guilhermepozoti@gmail.com>",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --verbose"
 
   },
   "dependencies": {

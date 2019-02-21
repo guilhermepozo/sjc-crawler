@@ -6,9 +6,9 @@ numeral.locale('pt-br')
 moment.locale('pt-br')
 
 let parseDate = (text) => {
-    const textDate = xregexp.exec(text, xregexp('(3[01]|[12][0-9]|0?[1-9]).*(Fevereiro|Janeiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro).*((?:19|20)\\d{2})', 'igs'))
+    const textDate = xregexp.exec(text, xregexp('(3[01]|[12][0-9]|0?[1-9])(de|\\,)? .*(Fevereiro|Janeiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro).*((?:19|20)\\d{2})<br>', 'igs'))
     const numberDate = xregexp.exec(text, xregexp('(3[01]|[12][0-9]|0?[1-9])\\/(1[012]|0?[1-9])\\/((?:19|20)\\d{2})', 'igs'))
-    return numberDate ? numberDate[0] : textDate ? moment(`${textDate[1]}/${textDate[2]}/${textDate[3]}`, 'DD/MMMM/YYYY').format('DD/MM/YYYY') : null
+    return numberDate ? numberDate[0] : textDate ? moment(`${textDate[1]}/${textDate[3]}/${textDate[4]}`, 'DD/MMMM/YYYY').format('DD/MM/YYYY') : null
 }
 
 let parseTime = (text) => {
@@ -29,10 +29,7 @@ let createBid = (section, department, category) => {
     let price = numeral(xregexp.exec(section, xregexp("R\\$.*?\\,\\d{2}", 'igs'))[0].replace('R$', '')).value()
     let description = xregexp.exec(section, xregexp('<br>(.*?)<br>', 'igs'))[1]
     let title = xregexp.exec(section, xregexp('<b>(.*?)<\/b>', 'igs'))[1]
-        if(title == "PP 191/2018/SS"){
-          console.log(section)
-          console.log(status)
-    }
+
     const bid = {
         title,
         description,
@@ -50,4 +47,3 @@ exports.createBid = createBid;
 exports.hasBids = hasBids;
 exports.parseDate = parseDate;
 exports.parseTime = parseTime;
-

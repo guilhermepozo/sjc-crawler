@@ -1,8 +1,6 @@
 #!/bin/sh
 # Node.js Sample for AWS Cloud9 - AWS Cloud9
 # https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-nodejs.html#sample-nodejs-install
-nvm install v10
-nvm alias default v10
  
 sudo yum install -y libXcursor libXdamage libcups libXss libXrandr cups-libs dbus-glib libXinerama cairo cairo-gobject pango
     

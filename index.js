@@ -7,7 +7,7 @@ const logger = require('./utils/log');
 
 
 scraping().then(res => {
-        logger.info(JSON.stringify(res, null, 2))
+       logger.info(JSON.stringify(res, null, 2))
         mongoose.disconnect()
 
     },

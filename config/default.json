@@ -1,5 +1,32 @@
 {
-    "db_name": "brasil317",
-    "host": "cluster0-gp34r.mongodb.net",
-    "db_username": "admin"
+    "urls": [
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=1",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=2",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=3",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=4",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=5",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=6",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=7",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=8",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=9",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=10",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=11",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=12",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=13",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=1&sit=1&mod=14",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=1",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=2",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=3",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=4",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=5",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=6",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=7",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=8",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=9",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=10",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=11",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=12",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=13",
+        "https://servicos.sjc.sp.gov.br/sa/licitacoes/detalhe.aspx?sec=2&sit=1&mod=14"
+    ]
 }
